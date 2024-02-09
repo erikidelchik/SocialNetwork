@@ -1,12 +1,16 @@
+from Post import *
+
+
 class User:
-    _online = False
-    following = []
-    followers = []
 
     def __init__(self, username, password):
         self.username = username
         self.password = password
-        self.online = True
+        self._online = True
+        self.following = []
+        self.followers = []
+        self.notifications = []
+        self.posts_number = 0
 
     def __eq__(self, other):
         return self.username == other.username and self.password == other.password
@@ -26,3 +30,22 @@ class User:
     def unfollow(self, other):
         if self._online and other in self.following:
             self.following.remove(other)
+            other.followers.remove(self)
+            print(f"{self.username} unfollowed {other.username}")
+
+    def publish_post(self, title, *args):
+        if self._online:
+            new_post = Post(self, title, *args)
+            self.posts_number += 1
+            return new_post
+
+    def print_notifications(self):
+        print(f"{self.username}'s notifications:")
+        for notification in self.notifications:
+            print(f"{notification}")
+
+    def add_notification(self, notification):
+        self.notifications.append(notification)
+
+    def __str__(self):
+        return f"User name: {self.username}, Number of posts: {self.posts_number}, Number of followers: {len(self.followers)}"

@@ -1,4 +1,3 @@
-from matplotlib import image
 from User import User
 
 
@@ -19,9 +18,9 @@ class SocialNetwork:
     def sign_up(self, name, password):
         # check if new_user not already exist
         for user in self._users:
-            if user.name == name:
+            if user.username == name:
                 return
-        if 4 <= password <= 8:
+        if 4 <= len(password) <= 8:
             new_user = User(name, password)
             self._users.append(new_user)
             return new_user
@@ -41,5 +40,5 @@ class SocialNetwork:
 
 
 
-instance = SocialNetwork('Twitter')
-print(instance)
+# instance = SocialNetwork('Twitter')
+# print(instance)
