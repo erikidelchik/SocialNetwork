@@ -35,9 +35,19 @@ class User:
 
     def publish_post(self, title, *args):
         if self._online:
-            new_post = Post(self, title, *args)
-            self.posts_number += 1
-            return new_post
+            new_post = None
+            if title == "Text":
+                new_post = TextPost(self, *args)
+            elif title == "Image":
+                new_post = ImagePost(self, *args)
+            elif title == "Sale":
+                new_post = SalePost(self, *args)
+
+            if new_post is not None:
+                for other in self.followers:
+                    other.add_notification(f"{self.username} has a new post")
+                self.posts_number += 1
+                return new_post
 
     def print_notifications(self):
         print(f"{self.username}'s notifications:")

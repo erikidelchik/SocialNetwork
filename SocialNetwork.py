@@ -13,7 +13,11 @@ class SocialNetwork:
         return cls._instance
 
     def __str__(self):
-        return self.network_name
+        print(f"{self.network_name} social network:")
+        for user in self._users[:-1]:
+            print(user)
+        print(self._users[-1], end='')
+        return ""
 
     def sign_up(self, name, password):
         # check if new_user not already exist
@@ -40,5 +44,3 @@ class SocialNetwork:
 
 
 
-# instance = SocialNetwork('Twitter')
-# print(instance)

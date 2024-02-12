@@ -1,96 +1,78 @@
-from matplotlib import image, pyplot as plt
+# from matplotlib import pyplot as plt
+# from matplotlib import image
 
 
 class Post:
 
-    def __init__(self, owner, title, *args):
-        self.title = title
+    def __init__(self, owner):
         self.owner = owner
-        self.args = args
-        self.post = self.post_type()
         self.likes = 0
-
-    def post_type(self):
-        if self.title == "Text":
-            return TextPost(self.owner, self.args[0])
-
-        elif self.title == "Image":
-            return ImagePost(self.owner, self.args[0])
-
-        elif self.title == "Sale":
-            return SalePost(self.owner, self.args[0], self.args[1], self.args[2])
 
     def like(self, other):
         if type(other is type(self.owner)):
-            print(f"notification to {self.owner.username}: {other.username} liked your post")
-            notification = f"{other.username} your post"
-            self.owner.add_notification(notification)
             self.likes += 1
+            if other.username != self.owner.username:
+                print(f"notification to {self.owner.username}: {other.username} liked your post")
+                notification = f"{other.username} liked your post"
+                self.owner.add_notification(notification)
 
     def comment(self, other, message):
         if type(other) is type(self.owner):
-            print(f"notification to {self.owner.username}: {other.username} commented on your post: {message}")
-            notification = f"{other.username} commented on your post"
-            self.owner.add_notification(notification)
-
-    def discount(self, amount, password):
-        self.post.discount(amount, password)
-
-    def display(self):
-        return self.post.display()
-
-    def sold(self, password):
-        return self.post.sold(password)
-
-    def __str__(self):
-        return str(self.post)
+            if other.username != self.owner.username:
+                print(f"notification to {self.owner.username}: {other.username} commented on your post: {message}")
+                notification = f"{other.username} commented on your post"
+                self.owner.add_notification(notification)
 
 
-class TextPost:
+class TextPost(Post):
     def __init__(self, owner, text):
-        self.owner = owner
-        self.text = text
-        print(f"{self.owner.username} published a post:")
-        print(self.text)
+        super().__init__(owner)
+        self.post_message = f'{self.owner.username} published a post:\n"{text}"\n'
+        print(self.post_message)
 
     def __str__(self):
-        return self.text
+        return f'{self.post_message}'
 
 
-class ImagePost:
+class ImagePost(Post):
     def __init__(self, owner, img):
-        self.owner = owner
+        super().__init__(owner)
         self.img = img
-        print(f"{self.owner.username} posted a picture")
+        print(f"{self.owner.username} posted a picture\n")
 
     def display(self):
-        # plt.imshow(self.img)
-        pass
+        # img = image.imread(self.img)
+        # plt.imshow(img)
+        print("Shows picture")
 
     def __str__(self):
-        return "Image posted"
+        return f"{self.owner.username} posted a picture\n"
 
 
-class SalePost:
-    on_sale = True
+class SalePost(Post):
 
     def __init__(self, owner, item, price, location):
-        self.owner = owner
+        super().__init__(owner)
         self.price = price
+        self.item = item
+        self.location = location
+        self.price = price
+        self.on_sale = True
         print(f"{self.owner.username} posted a product for sale:")
-        print(f"For sale! {item}, price: {price}, pickup from: {location}")
+        print(f"For sale! {item}, price: {price}, pickup from: {location}\n")
 
     def __str__(self):
         if not self.on_sale:
-            return f"{self.owner.username}'s product is sold"
+            return f"{self.owner.username} posted a product for sale:\nSold! {self.item}, price: {self.price}, pickup from: {self.location}\n"
         else:
             return f"{self.owner.username}'s product is on sale"
 
     def sold(self, password):
         if self.owner.password == password:
             self.on_sale = False
+            print(f"{self.owner.username}'s product is sold")
 
     def discount(self, amount, password):
         if self.owner.password == password:
-            self.price = self.price-self.price*amount/100
+            self.price = self.price - self.price * amount / 100
             print(f"Discount on {self.owner.username} product! the new price is: {self.price}")
