@@ -1,5 +1,5 @@
 from Post import *
-
+from Observer import *
 
 class User:
 
@@ -11,6 +11,7 @@ class User:
         self.followers = []
         self.notifications = []
         self.posts_number = 0
+        self.post_observer = post_observer(self)
 
     def __eq__(self, other):
         return self.username == other.username and self.password == other.password
@@ -35,19 +36,22 @@ class User:
 
     def publish_post(self, title, *args):
         if self._online:
-            new_post = None
-            if title == "Text":
-                new_post = TextPost(self, *args)
-            elif title == "Image":
-                new_post = ImagePost(self, *args)
-            elif title == "Sale":
-                new_post = SalePost(self, *args)
+            new_post = self.post_factory(title, *args)
 
             if new_post is not None:
-                for other in self.followers:
-                    other.add_notification(f"{self.username} has a new post")
+                # observer
+                self.post_observer.notify()
                 self.posts_number += 1
                 return new_post
+
+    def post_factory(self, title, *args):
+        if title == "Text":
+            return TextPost(self, *args)
+        elif title == "Image":
+            return ImagePost(self, *args)
+        elif title == "Sale":
+            return SalePost(self, *args)
+        else: return None
 
     def print_notifications(self):
         print(f"{self.username}'s notifications:")
