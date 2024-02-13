@@ -1,5 +1,5 @@
-# from matplotlib import pyplot as plt
-# from matplotlib import image
+from matplotlib import pyplot as plt
+from matplotlib import image
 
 
 class Post:
@@ -41,9 +41,9 @@ class ImagePost(Post):
         print(f"{self.owner.username} posted a picture\n")
 
     def display(self):
-        # img = image.imread(self.img)
-        # plt.imshow(img)
         print("Shows picture")
+        plt.imshow(image.imread(self.img))
+        plt.show()
 
     def __str__(self):
         return f"{self.owner.username} posted a picture\n"
