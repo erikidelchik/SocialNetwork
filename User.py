@@ -12,7 +12,7 @@ class User:
         self.followers = []
         self.notifications = []
         self.posts_number = 0
-        self.post_observer = PostObserver(self)
+        self.post_observer = PostNotificationObserver(self)
 
     def __eq__(self, other):
         return self.username == other.username and self.password == other.password

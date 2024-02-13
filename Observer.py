@@ -4,7 +4,7 @@ class Observer:
         pass
 
 
-class PostObserver(Observer):
+class PostNotificationObserver(Observer):
     def __init__(self, owner):
         self.owner = owner
         self.username = owner.username
@@ -13,16 +13,19 @@ class PostObserver(Observer):
         for follower in self.owner.followers:
             follower.add_notification(f"{self.username} has a new post")
 
-# class likes_observer(observer):
-#     def __init__(self,other):
+
+# class LikesNotificationObserver(Observer):
+#     def __init__(self, owner, other):
+#         self.owner = owner
 #         self.other = other
 #
 #     def notify(self):
-#             self.owner.add_notification(f"{self.other} liked your post")
+#         self.owner.add_notification(f"{self.other} liked your post")
 #
 #
-# class comments_observer(observer):
-#     def __init__(self,other):
+# class CommentsNotificationObserver(Observer):
+#     def __init__(self, owner, other):
+#         self.owner = owner
 #         self.other = other
 #
 #     def notify(self):
