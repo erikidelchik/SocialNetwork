@@ -1,6 +1,7 @@
 from Post import *
 from Observer import *
 
+
 class User:
 
     def __init__(self, username, password):
@@ -11,7 +12,7 @@ class User:
         self.followers = []
         self.notifications = []
         self.posts_number = 0
-        self.post_observer = post_observer(self)
+        self.post_observer = PostObserver(self)
 
     def __eq__(self, other):
         return self.username == other.username and self.password == other.password
@@ -51,7 +52,8 @@ class User:
             return ImagePost(self, *args)
         elif title == "Sale":
             return SalePost(self, *args)
-        else: return None
+        else:
+            return None
 
     def print_notifications(self):
         print(f"{self.username}'s notifications:")
