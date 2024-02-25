@@ -14,9 +14,8 @@ class SocialNetwork:
 
     def __str__(self):
         print(f"{self.network_name} social network:")
-        for user in self._users[:-1]:
+        for user in self._users:
             print(user)
-        print(self._users[-1], end='')
         return ""
 
     def sign_up(self, name, password):
